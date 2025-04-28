@@ -11,7 +11,7 @@ class SendOtpWhatsapp{
     {
         $this->tokenSingle = $tokenSingle;
     }
-    public function sendOtpSingle($phone, $message, $tokenSingle)
+    public function sendOtpSingle($phone, $message)
     {
         $payload = [
             'to' => $phone,
@@ -22,6 +22,23 @@ class SendOtpWhatsapp{
             'Authorization' => "Bearer "  . $this->tokenSingle,
             'Content-Type' => 'application/json'
         ])->post("https://sing.7th-october.com/send", $payload);
+
+        return $response;
+    }
+
+    public function sendUltraMsg($phone, $message)
+    {
+        $payload = [
+            'token' =>  $this->tokenSingle,
+            'to' => $phone,
+            'body' => $message,
+        ];
+
+        $response = Http::asForm()  
+            ->withHeaders([
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ])
+            ->post('https://api.ultramsg.com/instance114964/messages/chat', $payload);
 
         return $response;
     }

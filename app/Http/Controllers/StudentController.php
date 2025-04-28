@@ -65,13 +65,13 @@ class StudentController extends Controller
 
                     $phone = preg_replace('/[^0-9]/', '', $student[$phoneColumn] ?? '');
                     if (!$phone) continue;
-                    //            dd($phone);
+
                     if($method == "allMessage"){
-                        $sendResponse = $otpService->sendOtpSingle($phone, $message, $tokenSingle);
+                        $sendResponse = $otpService->sendOtpSingle($phone, $message);
                     }
+                    
                     if($method == "ultramsg"){
-                        $url = "https://api.ultramsg.com/instance114964/messages/chat?token=$tokenSingle&to=$phone&body=$message";
-                        $sendResponse = Http::get($url);
+                       $sendResponse = $otpService->sendUltraMsg($phone, $message);
                     }
 
 //                    $otpService = new SendOtpWhatsapp();
