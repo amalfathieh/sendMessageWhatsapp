@@ -20,25 +20,25 @@ class StudentController extends Controller
 
     public function uploadExcel(Request $request)
     {
-        if(Auth::user()){
-            $request->validate([
-                'excel_file' => 'required|file|mimes:xlsx,csv,xls',
-            ]);
+        if (!Auth::user()) {
+            return redirect()->route('login');
+        }
 
+        $request->validate([
+            'excel_file' => 'required|file|mimes:xlsx,xls,csv|max:2048',
+        ]);
+
+        try {
             $data = Excel::toArray([], $request->file('excel_file'))[0];
-
             $headers = $data[0];
             $rows = array_slice($data, 1);
-
             $students = collect($rows)->map(fn($row) => array_combine($headers, $row));
 
             return view('students.table', compact('students', 'headers'));
-
+        } catch (\Exception $e) {
+            return back()->with('error', 'حدث خطأ أثناء قراءة الملف. يرجى التأكد من أن الملف صحيح وبصيغة Excel (xls, xlsx, csv)');
         }
-        return route('login');
-
     }
-
     public function send(Request $request)
     {
         if(Auth::user()){
@@ -69,7 +69,7 @@ class StudentController extends Controller
                     if($method == "allMessage"){
                         $sendResponse = $otpService->sendOtpSingle($phone, $message);
                     }
-                    
+
                     if($method == "ultramsg"){
                        $sendResponse = $otpService->sendUltraMsg($phone, $message);
                     }

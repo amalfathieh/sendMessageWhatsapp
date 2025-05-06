@@ -69,16 +69,6 @@
             box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
         }
 
-        .remember-me {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .remember-me input {
-            margin-left: 0.5rem;
-        }
-
         .login-button {
             width: 100%;
             padding: 0.75rem;
@@ -95,21 +85,6 @@
         .login-button:hover {
             background-color: #4338ca;
         }
-
-        .forgot-password {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .forgot-password a {
-            color: #4f46e5;
-            text-decoration: none;
-        }
-
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-
         .errors {
             color: #dc2626;
             margin-bottom: 1rem;

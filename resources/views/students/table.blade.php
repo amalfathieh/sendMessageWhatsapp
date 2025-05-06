@@ -53,6 +53,22 @@
 
     <div>
 
+            @if(session('error'))
+                <div style="color: red; padding: 10px; background: #ffebee; border: 1px solid red; border-radius: 5px; margin: 10px 0;">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div style="color: red; padding: 10px; background: #ffebee; border: 1px solid red; border-radius: 5px; margin: 10px 0;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
         @if (auth()->check())
 
             <div style="text-align: right; padding: 10px;">
@@ -144,21 +160,35 @@
 
                     @endif
                 </div>
-                <script>
-                    function toggleCheckboxes(state) {
-                        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                            checkbox.checked = state;
-                        });
-                    }
-                    document.querySelector('form').addEventListener('submit', function (e) {
-                        const fileInput = document.querySelector('input[name="excel_file"]');
-                        const file = fileInput.files[0];
-                        if (file && !/\.(xlsx|xls|csv)$/i.test(file.name)) {
-                            e.preventDefault();
-                            alert("❌ الرجاء رفع ملف Excel فقط (xls, xlsx, csv)");
+
+                    <script>
+                        function toggleCheckboxes(state) {
+                            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                                checkbox.checked = state;
+                            });
                         }
-                    });
-                </script>
+
+                        // التحقق من صيغة الملف قبل الرفع
+                        document.querySelector('form[action="{{ route('upload.excel') }}"]').addEventListener('submit', function (e) {
+                            const fileInput = document.querySelector('input[name="excel_file"]');
+
+                            if (fileInput.files.length === 0) {
+                                e.preventDefault();
+                                alert("❌ الرجاء اختيار ملف Excel أولاً");
+                                return;
+                            }
+
+                            const file = fileInput.files[0];
+                            const allowedExtensions = /(\.xlsx|\.xls|\.csv)$/i;
+
+                            if (!allowedExtensions.exec(file.name)) {
+                                e.preventDefault();
+                                alert("❌ الرجاء رفع ملف Excel فقط (xls, xlsx, csv)");
+                                fileInput.value = '';
+                            }
+                        });
+                    </script>
+
 
         @else
             {{-- ❌ المستخدم غير مسجل، إعادة التوجيه --}}

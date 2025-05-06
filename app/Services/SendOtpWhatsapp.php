@@ -34,11 +34,11 @@ class SendOtpWhatsapp{
             'body' => $message,
         ];
 
-        $response = Http::asForm()  
+        $response = Http::asForm()
             ->withHeaders([
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ])
-            ->post('https://api.ultramsg.com/instance114964/messages/chat', $payload);
+            ->post('https://api.ultramsg.com/instance118489/messages/chat', $payload);
 
         return $response;
     }
