@@ -13,14 +13,9 @@ use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
-    public function index()
-    {
-        return view('students.table');
-    }
-
     public function uploadExcel(Request $request)
     {
-        if (!Auth::user()) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 

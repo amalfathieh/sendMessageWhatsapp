@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', function () {
+    return view('students.table');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -16,11 +16,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//Route::middleware('auth')->group(function () {
-    Route::get('/', [StudentController::class, 'index'])->name('upload.form');
+Route::middleware('auth')->group(function () {
     Route::post('/upload', [StudentController::class, 'uploadExcel'])->name('upload.excel');
     Route::post('/send', [StudentController::class, 'send'])->name('send.messages');
-//    });
+    });
 
 
 require __DIR__.'/auth.php';
