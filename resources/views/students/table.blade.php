@@ -131,7 +131,7 @@
                                 <div class="form-section">
                                     <br>
                                     <label>نص الرسالة (استخدم $اسم_العمود كمتغير):</label><br>
-                                    <textarea name="template" rows="8" cols="60" placeholder="مثال: الطالب $الاسم حصل على $الدرجة في $المادة"></textarea>
+                                    <textarea id="message" name="template"  oninput="setDirection(this)" rows="8" cols="60" placeholder="مثال: الطالب $الاسم حصل على $الدرجة في $المادة"></textarea>
                                     <br>
                                     <label>ادخل التوكن:</label><br>
                                     <textarea name="token" rows="4" cols="60" required></textarea>
@@ -162,6 +162,26 @@
                 </div>
 
                     <script>
+                        function setDirection(el) {
+                            const value = el.value.trim();
+                            if (!value) {
+                                el.style.direction = 'rtl'; // الافتراضي عربي مثلاً
+                                return;
+                            }
+
+                            // نتحقق من أول حرف غير فارغ
+                            const firstChar = value[0];
+                            const arabicRegex = /[\u0600-\u06FF]/; // نطاق الأحرف العربية
+
+                            if (arabicRegex.test(firstChar)) {
+                                el.style.direction = 'rtl';
+                                el.style.textAlign = 'right';
+                            } else {
+                                el.style.direction = 'ltr';
+                                el.style.textAlign = 'left';
+                            }
+                        }
+
                         function toggleCheckboxes(state) {
                             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                                 checkbox.checked = state;
